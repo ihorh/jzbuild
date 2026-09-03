@@ -175,7 +175,7 @@ Zig 0.16.0 or newer.
 
 ## Acknowledgements
 
-Designed and built with AI-assisted engineering, using Claude by Anthropic.
+Designed and built with AI assistance from Claude by Anthropic.
 
 ## License
 
