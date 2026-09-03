@@ -173,6 +173,10 @@ stops building, the change that broke it is wrong.
 
 Zig 0.16.0 or newer.
 
+## Acknowledgements
+
+Designed and built with AI-assisted engineering, using Claude by Anthropic.
+
 ## License
 
 MIT. See [LICENSE](LICENSE).
