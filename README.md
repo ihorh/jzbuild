@@ -102,11 +102,19 @@ Upgrading means running that command again.
 | `zig build test-NAME` | runs one test, `tests/NAME_test.c` |
 | `zig build run` | runs the app |
 | `zig build run-NAME` | runs one named app, for a project declaring several |
+| `zig build cdb` | writes `compile_commands.json` to the project root |
 
 Arguments after `--` reach the app: `zig build run -- --flag value`.
 
 Plain `zig build` compiles and installs the app alone. Test binaries build only
 when you ask for a test step, and they stay out of the install prefix.
+
+`cdb` reads the actual build graph — the app's sources and every test
+runner's — so its output matches what `zig build` really compiles, flags
+included. Point clangd at it once and re-run `zig build cdb` whenever sources
+or flags change; VS Code's clangd extension picks up a
+`compile_commands.json` in the workspace root automatically, no settings
+needed.
 
 ## Command-Line Options
 

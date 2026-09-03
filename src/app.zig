@@ -4,6 +4,7 @@
 const std = @import("std");
 const flags = @import("flags.zig");
 const glob = @import("glob.zig");
+const cdb = @import("cdb.zig");
 
 pub const AppOptions = struct {
     name: []const u8,
@@ -46,7 +47,7 @@ pub fn app(b: *std.Build, opts: AppOptions) *std.Build.Step.Compile {
 
     addRunStep(b, artifact, opts.name);
 
-    addTests(b, .{
+    const test_runners = addTests(b, .{
         .target = target,
         .optimize = optimize,
         .cstd = cstd,
@@ -54,6 +55,11 @@ pub fn app(b: *std.Build, opts: AppOptions) *std.Build.Step.Compile {
         .has_include = has_include,
         .tests = tests,
     });
+
+    var cdb_targets: std.ArrayListUnmanaged(*std.Build.Step.Compile) = .empty;
+    cdb_targets.append(b.allocator, artifact) catch @panic("OOM");
+    cdb_targets.appendSlice(b.allocator, test_runners) catch @panic("OOM");
+    _ = cdb.addStep(b, "cdb", cdb_targets.items);
 
     return artifact;
 }
@@ -111,11 +117,12 @@ const TestContext = struct {
 /// A test runner skips `installArtifact`, so `zig build` leaves the install
 /// prefix holding shipped binaries alone. The always-install invariant covers
 /// apps and libraries, which a parent build looks up by name.
-fn addTests(b: *std.Build, ctx: TestContext) void {
-    if (ctx.tests.len == 0) return;
+fn addTests(b: *std.Build, ctx: TestContext) []const *std.Build.Step.Compile {
+    if (ctx.tests.len == 0) return &.{};
 
     const test_step = b.step("test", "build and run every test binary");
     const test_flags = flags.testFlags(b, ctx.cstd);
+    var runners: std.ArrayListUnmanaged(*std.Build.Step.Compile) = .empty;
 
     for (ctx.tests) |test_file| {
         const name = std.fs.path.stem(test_file);
@@ -137,6 +144,7 @@ fn addTests(b: *std.Build, ctx: TestContext) void {
         });
         const run = b.addRunArtifact(runner);
         test_step.dependOn(&run.step);
+        runners.append(b.allocator, runner) catch @panic("OOM");
 
         // * test-NAME — one test on its own, for a tight edit-run loop.
         // Strip the "_test" suffix itself. `trimEnd` takes a character set,
@@ -145,6 +153,8 @@ fn addTests(b: *std.Build, ctx: TestContext) void {
         const one = b.step(b.fmt("test-{s}", .{short}), b.fmt("run the {s} test", .{short}));
         one.dependOn(&run.step);
     }
+
+    return runners.toOwnedSlice(b.allocator) catch @panic("OOM");
 }
 
 /// The app's sources minus `src/main.c`, whose `main` would collide with the
