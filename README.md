@@ -76,6 +76,11 @@ of what it downloaded:
 The commit is pinned, so your build stays identical until you fetch again.
 Append `#v0.1.0` to the URL to fetch a tag instead of the default branch.
 
+`zig fetch` unpacks the package into a local cache directory (`.zig-cache/` by
+default, or `zig-pkg/` if the project points its cache elsewhere). Gitignore
+that directory — the `.hash` in `build.zig.zon` is what reproduces it, not the
+directory's contents.
+
 Then import it at the top of `build.zig`:
 
 ```zig
