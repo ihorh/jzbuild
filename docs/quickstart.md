@@ -73,7 +73,7 @@ Field by field:
 | `.dependencies` | empty for now; step 4 fills it in |
 | `.paths` | which files belong to the package |
 
-One field is missing on purpose. Run any Zig command now and it says so:
+One field is missing on purpose. Run `zig build` now and it says so:
 
 ```
 error: missing top-level 'fingerprint' field; suggested value: 0x3610a68656c20947
