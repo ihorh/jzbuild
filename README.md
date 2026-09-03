@@ -51,25 +51,30 @@ The layout stays inferred. Only the unusual part appears in the file.
 
 ## Installation
 
+New to Zig's package manager? Start with the
+[quick start](docs/quickstart.md), which builds a hello-world project from an
+empty directory.
+
 Fetch the package. The command records it in your `build.zig.zon`:
 
 ```bash
-zig fetch --save git+https://github.com/ihorh/jzbuild#v0.1.0
+zig fetch --save git+https://github.com/ihorh/jzbuild
 ```
 
-Pin a tag as shown. A URL with no tag follows the default branch, so your build
-changes under you when the branch moves.
-
-That writes a `.jzbuild` entry with its hash:
+That writes a `.jzbuild` entry naming the exact commit it resolved, plus a hash
+of what it downloaded:
 
 ```zig
 .dependencies = .{
     .jzbuild = .{
-        .url = "git+https://github.com/ihorh/jzbuild#v0.1.0",
-        .hash = "...",
+        .url = "git+https://github.com/ihorh/jzbuild#a2c9ef0c67edf8a185b38f5c0e8d4c7a71b744d8",
+        .hash = "jzbuild-0.0.0-LUXUxVlEAADvdxgYoPnMFfqBqgRFnye835x1j0yjTjMF",
     },
 },
 ```
+
+The commit is pinned, so your build stays identical until you fetch again.
+Append `#v0.1.0` to the URL to fetch a tag instead of the default branch.
 
 Then import it at the top of `build.zig`:
 
@@ -81,7 +86,7 @@ The import name matches the key in `.dependencies`, and it resolves to the
 package's own `build.zig`. jzbuild ships helpers rather than an artifact, so that
 import is the whole setup.
 
-Upgrading is the same command with a newer tag.
+Upgrading means running that command again.
 
 ## Steps
 
@@ -163,11 +168,14 @@ The constructors return the underlying `*std.Build.Step.Compile`, so anything
 jzbuild cannot express you wire yourself in plain Zig. The helpers are a
 shortcut, never a wall.
 
-## Examples
+## Documentation
+
+- [Quick start](docs/quickstart.md) — a hello-world project, step by step,
+  starting from an empty directory.
 
 Each directory under [`examples/`](examples/) is a complete project that builds
-against the jzbuild in this repo. They double as the test suite: if an example
-stops building, the change that broke it is wrong.
+against the jzbuild in this repo. They double as the test suite. An example that
+stops building condemns the change that broke it.
 
 ## Requirements
 
