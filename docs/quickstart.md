@@ -1,15 +1,17 @@
-# Quick Start
+# Build a C Project with Zig — Quick Start
 
-Build and run a C program that prints `Hello, world!`. Every file you need is
-written out in full, and every command is one you can paste.
+Use `zig build` as the build system for a C project, starting from an empty
+directory: no CMake, no Makefile, and no compiler to install. Every file you
+need is written out in full, and every command is one you can paste.
 
-This walkthrough covers one source file and nothing else. Tests, extra modules,
-and headers come later.
+By the end you have a C program that prints `Hello, world!`, built and run
+through `zig build`. This walkthrough covers one source file and nothing else.
+Tests, extra modules, and headers come later.
 
 ## What You Need
 
-Zig 0.16.0 or newer, and nothing else. Zig ships its own C compiler, so it
-replaces clang, make, and the rest of a system toolchain.
+Zig 0.16.0, and nothing else. Zig bundles clang as `zig cc`, so one download
+replaces the C compiler, `make`, and the rest of a system toolchain.
 
 ```bash
 zig version

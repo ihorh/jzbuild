@@ -17,9 +17,13 @@ it, or fork it and cut it to your own shape.
 > Built and verified against **Zig 0.16.0**. Zig's build API changes between
 > versions, so read this as a snapshot pinned to that one.
 
-![A terminal recording: `bat` shows a five-line build file and its C source, `zig build` compiles and runs it, `file` reports a native Mach-O arm64 binary, then `zig build -Dtarget=x86_64-linux` produces an ELF x86-64 binary on the same macOS host with no extra toolchain.](docs/demo.gif)
-
 ## What It Looks Like
+
+![A terminal recording running `bat` on the build file and its C source, then `zig build`, `file`, `zig build -Dtarget=x86_64-linux`, and `file` again.](docs/demo.gif)
+
+A five-line `build.zig`, a native binary, and the same sources cross-compiled to
+Linux x86-64 from a macOS host — without CMake or Make, and without installing a
+cross toolchain. Zig ships `zig cc`, so the C compiler is already there.
 
 A project with `src/`, `include/`, and `tests/`:
 
@@ -58,20 +62,21 @@ pub fn build(b: *std.Build) void {
 
 The layout stays inferred. Only the unusual part appears in the file.
 
+## Quick Start
+
+New to Zig's package manager? The [quick start](docs/quickstart.md) builds a
+hello-world C project from an empty directory, step by step.
+
 ## Installation
 
-New to Zig's package manager? Start with the
-[quick start](docs/quickstart.md), which builds a hello-world project from an
-empty directory.
-
-Fetch the package. The command records it in your `build.zig.zon`:
+In a project you already have, fetch the package:
 
 ```bash
 zig fetch --save git+https://github.com/ihorh/jzbuild
 ```
 
-That writes a `.jzbuild` entry naming the exact commit it resolved, plus a hash
-of what it downloaded:
+That records the dependency in your `build.zig.zon`, writing a `.jzbuild` entry
+that names the exact commit it resolved, plus a hash of what it downloaded:
 
 ```zig
 .dependencies = .{
@@ -100,7 +105,7 @@ The import name matches the key in `.dependencies`, and it resolves to the
 package's own `build.zig`. jzbuild ships helpers rather than an artifact, so that
 import is the whole setup.
 
-Upgrading means running that command again.
+Upgrading means running `zig fetch --save` again.
 
 ## Steps
 
