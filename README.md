@@ -4,15 +4,18 @@ Build a C project with `zig build`. A standard project — `src/`, `include/`,
 `tests/` — needs a short `build.zig`: `jzbuild` infers whatever follows a
 convention, and you spell out only what is unusual about your project.
 
-That Zig's build system can build plain C is widely repeated and thinly
-documented. This repo is that claim worked through end to end: a convention
-layer over `std.Build`, and the reasoning behind each piece of it. Read it, use
-it, or fork it and cut it to your own shape.
+Zig's build system can build plain C. That gets repeated widely and documented
+thinly. This repo is a convention layer over `std.Build` for C projects, with
+the reasoning behind each piece of it. Read it, use it, or fork it and cut it
+to your own shape.
 
 > **Scope.** A demonstration of an approach, not a product. `app()` works and the
 > first example below builds and runs today; the second example shows
 > `project()`, which is still a design target. The API keeps moving, there is no
 > release, and nothing here comes with support promises.
+>
+> The helpers infer C sources only. Nothing in the approach is C-specific and Zig
+> compiles C++ just as well, but jzbuild does not do it today.
 >
 > Built and verified against **Zig 0.16.0**. Zig's build API changes between
 > versions, so read this as a snapshot pinned to that one.
