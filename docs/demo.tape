@@ -26,7 +26,12 @@ Enter
 Wait+Screen /Hello, world!/
 Sleep 1s
 
-Type "zig build -Dtarget=aarch64-linux && file zig-out/bin/basic"
+Type "file zig-out/bin/basic"
+Enter
+Wait+Screen /Mach-O/
+Sleep 2s
+
+Type "zig build -Dtarget=x86_64-linux && file zig-out/bin/basic"
 Enter
 Wait+Screen /ELF 64-bit/
-Sleep 4s
+Sleep 6s
