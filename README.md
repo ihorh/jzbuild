@@ -1,14 +1,21 @@
 # jzbuild
 
-Build helpers for C projects that build with `zig build`.
+Build a C project with `zig build`. A standard project — `src/`, `include/`,
+`tests/` — needs a short `build.zig`: `jzbuild` infers whatever follows a
+convention, and you spell out only what is unusual about your project.
 
-A standard C project should need a short `build.zig`. `jzbuild` infers whatever
-follows a convention: sources, includes, and tests. You spell out only what is
-unusual about your project.
+That Zig's build system can build plain C is widely repeated and thinly
+documented. This repo is that claim worked through end to end: a convention
+layer over `std.Build`, and the reasoning behind each piece of it. Read it, use
+it, or fork it and cut it to your own shape.
 
-> **Status: early.** `app()` works, and the first example below builds and runs
-> today. The second example shows `project()`, which is still a design target.
-> The API keeps moving, and the package has yet to cut a release.
+> **Scope.** A demonstration of an approach, not a product. `app()` works and the
+> first example below builds and runs today; the second example shows
+> `project()`, which is still a design target. The API keeps moving, there is no
+> release, and nothing here comes with support promises.
+>
+> Built and verified against **Zig 0.16.0**. Zig's build API changes between
+> versions, so read this as a snapshot pinned to that one.
 
 ## What It Looks Like
 
@@ -192,7 +199,11 @@ stops building condemns the change that broke it.
 
 ## Requirements
 
-Zig 0.16.0 or newer.
+Zig 0.16.0, and nothing else — Zig ships its own C compiler.
+
+Verified against 0.16.0, which is also the `minimum_zig_version` in
+`build.zig.zon`. Zig's build API is still changing between releases; on a newer
+Zig, expect any breakage to land here rather than in your own `build.zig`.
 
 ## Acknowledgements
 
