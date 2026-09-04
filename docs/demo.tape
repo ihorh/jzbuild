@@ -2,6 +2,7 @@
 Output docs/demo.gif
 
 Require zig
+Require bat
 
 Set Shell "bash"
 Set FontSize 22
@@ -16,9 +17,9 @@ Enter
 Sleep 500ms
 Show
 
-Type "cat build.zig"
+Type "bat --style=header --paging=never --color=always build.zig src/main.c"
 Enter
-Sleep 2s
+Sleep 3s
 
 Type "zig build && ./zig-out/bin/basic"
 Enter
@@ -28,4 +29,4 @@ Sleep 1s
 Type "zig build -Dtarget=aarch64-linux && file zig-out/bin/basic"
 Enter
 Wait+Screen /ELF 64-bit/
-Sleep 2s
+Sleep 4s
