@@ -17,7 +17,7 @@ it, or fork it and cut it to your own shape.
 > Built and verified against **Zig 0.16.0**. Zig's build API changes between
 > versions, so read this as a snapshot pinned to that one.
 
-![A terminal recording: `bat` shows a five-line build file and its C source, `zig build` compiles and runs it, then `zig build -Dtarget=aarch64-linux` cross-compiles to an ELF aarch64 binary on macOS with no extra toolchain.](docs/demo.gif)
+![A terminal recording: `bat` shows a five-line build file and its C source, `zig build` compiles and runs it, `file` reports a native Mach-O arm64 binary, then `zig build -Dtarget=x86_64-linux` produces an ELF x86-64 binary on the same macOS host with no extra toolchain.](docs/demo.gif)
 
 ## What It Looks Like
 
