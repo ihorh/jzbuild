@@ -22,9 +22,18 @@ pub fn strictFlags(b: *std.Build, cstd: []const u8) []const []const u8 {
 }
 
 /// Flags for test runners: `strictFlags` minus the two "should this have been
-/// static?" warnings. A test case is never declared in a header, so there the
-/// rule has nothing to catch and only asks every test to repeat `static`.
+/// static?" warnings, plus `-UNDEBUG`. A test case is never declared in a
+/// header, so the "static?" rule has nothing to catch there and only asks
+/// every test to repeat `static`.
+///
+/// `-UNDEBUG` counters zig's own C driver, which silently defines `NDEBUG`
+/// (and so strips every `assert`) under `-OReleaseFast`/`-OReleaseSmall`,
+/// unlike `-ODebug`/`-OReleaseSafe`. A test binary that leans on `assert` for
+/// its actual check — comparing real output to a golden, say — would
+/// otherwise pass by doing nothing at those two optimize levels, having
+/// never run the check at all. The app binary itself isn't test code, so it
+/// keeps zig's normal optimize-level convention and stays out of this.
 pub fn testFlags(b: *std.Build, cstd: []const u8) []const []const u8 {
-    const relaxed = [_][]const u8{ "-Wno-missing-prototypes", "-Wno-missing-variable-declarations" };
-    return std.mem.concat(b.allocator, []const u8, &.{ strictFlags(b, cstd), &relaxed }) catch @panic("OOM");
+    const extra = [_][]const u8{ "-Wno-missing-prototypes", "-Wno-missing-variable-declarations", "-UNDEBUG" };
+    return std.mem.concat(b.allocator, []const u8, &.{ strictFlags(b, cstd), &extra }) catch @panic("OOM");
 }
